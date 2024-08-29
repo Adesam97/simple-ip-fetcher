@@ -18,5 +18,5 @@ RUN cat /usr/share/nginx/html/index.html
 # Expose port 80 for the web server
 EXPOSE 80
 
-# Run the bash script on container start
-CMD ["/usr/local/bin/script.sh"]
+# Start Nginx after running the script
+CMD ["/bin/bash", "-c", "/usr/local/bin/fetch-info.sh && nginx -g 'daemon off;'"]

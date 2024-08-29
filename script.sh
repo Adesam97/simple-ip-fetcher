@@ -57,5 +57,6 @@ cat << EOF > /usr/share/nginx/html/index.html
 </html>
 EOF
 
-# Start the Nginx server to serve the HTML file
-nginx -g "daemon off;"
+echo "Contents of /usr/share/nginx/html:"
+ls -l /usr/share/nginx/html
+cat /usr/share/nginx/html/index.html
