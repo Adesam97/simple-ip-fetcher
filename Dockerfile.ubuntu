@@ -10,6 +10,12 @@ COPY script.sh /usr/local/bin/script.sh
 # Make the script executable
 RUN chmod +x /usr/local/bin/script.sh
 
+# Run the script to verify it works as expected and outputs correctly
+RUN /usr/local/bin/fetch-info.sh && \
+    echo "Script executed successfully" && \
+    ls -l /usr/share/nginx/html && \
+    cat /usr/share/nginx/html/index.html
+
 # Expose port 80 for the web server
 EXPOSE 80
 
