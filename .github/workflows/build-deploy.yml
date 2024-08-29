@@ -57,8 +57,8 @@ jobs:
       run: |
           # Variables
           RESOURCE_GROUP="myTerraformStateRG124334545346"
-          STORAGE_ACCOUNT="mytfstatestorage123245646"
-          CONTAINER_NAME="terraform-state323456533"
+          STORAGE_ACCOUNT="iptfstatestore123245646"
+          CONTAINER_NAME="terrastate323456533"
 
           # Create Resource Group if it does not exist
           if ! az group show --name $RESOURCE_GROUP --query "name" --output tsv; then

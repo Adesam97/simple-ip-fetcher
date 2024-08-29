@@ -11,8 +11,8 @@ provider "azurerm" {
 terraform {
   backend "azurerm" {
     resource_group_name  = "myTerraformStateRG124334545346"
-    storage_account_name = "mytfstatestorage123245646"
-    container_name       = "terraform-state323456533"
+    storage_account_name = "iptfstatestore123245646"
+    container_name       = "terrastate323456533"
     key                  = "terraform.tfstate"
   }
 }
