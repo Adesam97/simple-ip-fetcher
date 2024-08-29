@@ -2,7 +2,7 @@
 FROM ubuntu:24.10
 
 # Install necessary packages: curl and nginx
-RUN apt update && apt install -y curl nginx && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3
 
 # Copy the bash script into the container
 COPY script.sh /usr/local/bin/script.sh
@@ -10,13 +10,9 @@ COPY script.sh /usr/local/bin/script.sh
 # Make the script executable
 RUN chmod +x /usr/local/bin/script.sh
 
-# Run the script to verify it works as expected and outputs correctly
-RUN /usr/local/bin/script.sh
-RUN echo "Script executed successfully" && ls -l /usr/share/nginx/html
-RUN cat /usr/share/nginx/html/index.html
+RUN mkdir -p /var/ww/html
 
 # Expose port 80 for the web server
 EXPOSE 80
 
-# Start Nginx after running the script
-CMD ["/bin/bash", "-c", "/usr/local/bin/fetch-info.sh && nginx -g 'daemon off;'"]
+CMD ["/usr/local/bin/script.sh"]

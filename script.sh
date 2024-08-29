@@ -15,7 +15,7 @@ export CONTAINER_VERSION
 export HOST_PUBLIC_IP
 
 # Create HTML file
-cat << EOF > /usr/share/nginx/html/index.html
+cat << EOF > /var/www/html/index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +57,5 @@ cat << EOF > /usr/share/nginx/html/index.html
 </html>
 EOF
 
-echo "Contents of /usr/share/nginx/html:"
-ls -l /usr/share/nginx/html
-cat /usr/share/nginx/html/index.html
+# Start a simple HTTP server to serve the HTML file
+python3 -m http.server 80 --directory /var/www/html
