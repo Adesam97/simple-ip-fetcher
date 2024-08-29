@@ -45,11 +45,25 @@ jobs:
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
 
+    - name: Extract Azure Credentials
+      id: azure-creds
+      run: |
+        echo "::set-output name=subscription_id::$(echo '${{ env.AZURE_CREDENTIALS }}' | jq -r .subscriptionId)"
+        echo "::set-output name=client_id::$(echo '${{ env.AZURE_CREDENTIALS }}' | jq -r .clientId)"
+        echo "::set-output name=client_secret::$(echo '${{ env.AZURE_CREDENTIALS }}' | jq -r .clientSecret)"
+        echo "::set-output name=tenant_id::$(echo '${{ env.AZURE_CREDENTIALS }}' | jq -r .tenantId)"
+
     - name: Terraform Init
       run: terraform init
 
     - name: Terraform Plan
-      run: terraform plan -out=tfplan
+      run: |
+       terraform plan -out=tfplan \
+        -var="image=${{ env.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}" \
+        -var="subscription_id=${{ steps.azure-creds.outputs.subscription_id }}" \
+        -var="client_id=${{ steps.azure-creds.outputs.client_id }}" \
+        -var="client_secret=${{ steps.azure-creds.outputs.client_secret }}" \
+        -var="tenant_id=${{ steps.azure-creds.outputs.tenant_id }}"
 
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
