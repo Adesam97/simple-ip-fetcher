@@ -1,10 +1,35 @@
-resource "aws_ecr_repository" "container_info_app" {
-  name = "container-info-app"
+# Create a resource group
+resource "azurerm_resource_group" "aks_rg" {
+  name     = "myAKSResourceGroup"
+  location = var.region
 }
 
-resource "kubernetes_deployment" "container_info_app" {
+# Create an AKS cluster
+resource "azurerm_kubernetes_cluster" "aks" {
+  name                = "myAKSCluster"
+  location            = azurerm_resource_group.aks_rg.location
+  resource_group_name = azurerm_resource_group.aks_rg.name
+  dns_prefix          = "myakscluster"
+
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "Standard_DS2_v2"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  tags = {
+    Environment = "Development"
+  }
+}
+
+# Create a Kubernetes deployment
+resource "kubernetes_deployment" "ip-finder" {
   metadata {
-    name = "container-info-app"
+    name = "my-ip-finder-deployment"
   }
 
   spec {
@@ -12,21 +37,21 @@ resource "kubernetes_deployment" "container_info_app" {
 
     selector {
       match_labels = {
-        app = "container-info-app"
+        app = "ip-finder"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "container-info-app"
+          app = "ip-finder"
         }
       }
 
       spec {
         container {
-          image = "${aws_ecr_repository.container_info_app.repository_url}:latest"
-          name  = "container-info-app"
+          image = var.image
+          name  = "ip-finder"
 
           port {
             container_port = 80
@@ -37,14 +62,15 @@ resource "kubernetes_deployment" "container_info_app" {
   }
 }
 
-resource "kubernetes_service" "container_info_app" {
+# Create a Kubernetes service
+resource "kubernetes_service" "ip-finder" {
   metadata {
-    name = "container-info-app"
+    name = "ip-finder-service"
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.container_info_app.spec.0.template.0.metadata.0.labels.app
+      app = kubernetes_deployment.ip-finder.spec.0.template.0.metadata.0.labels.app
     }
 
     port {
