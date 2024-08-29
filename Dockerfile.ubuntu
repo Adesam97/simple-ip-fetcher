@@ -11,10 +11,9 @@ COPY script.sh /usr/local/bin/script.sh
 RUN chmod +x /usr/local/bin/script.sh
 
 # Run the script to verify it works as expected and outputs correctly
-RUN /usr/local/bin/script.sh && \
-    echo "Script executed successfully" && \
-    ls -l /usr/share/nginx/html && \
-    cat /usr/share/nginx/html/index.html
+RUN /usr/local/bin/script.sh
+RUN echo "Script executed successfully" && ls -l /usr/share/nginx/html
+RUN cat /usr/share/nginx/html/index.html
 
 # Expose port 80 for the web server
 EXPOSE 80
