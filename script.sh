@@ -7,7 +7,7 @@ CONTAINER_IP=$(hostname -i | awk '{print $1}')
 CONTAINER_VERSION=$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2)
 
 # Get host machine IPv4 address
-HOST_PUBLIC_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
+HOST_PUBLIC_IP=$(hostname -I | awk '{print $1}')
 
 # Get container base image
 BASE_IMAGE=$(cat /etc/os-release | grep "PRETTY_NAME" | sed 's/PRETTY_NAME=//g' | tr -d '"')
