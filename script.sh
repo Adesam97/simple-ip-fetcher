@@ -49,7 +49,7 @@ cat << EOF > /var/www/html/index.html
 <body>
     <div class="container">
         <h1>Container Information</h1>
-        <p><strong>IP Address:</strong> $CONTAINER_IP</p>
+        <p><strong>Container IP:</strong> $CONTAINER_IP</p>
         <p><strong>Version:</strong> $CONTAINER_VERSION</p>
         <p><strong>Host IP:</strong> $HOST_PUBLIC_IP</p>
     </div>

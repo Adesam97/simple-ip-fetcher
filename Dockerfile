@@ -10,6 +10,9 @@ COPY . .
 # Install the required Python packages
 RUN pip install requests flask
 
+# Install necessary packages for running commands
+RUN apt-get update && apt-get install -y grep
+
 # Define environment variable
 ENV PYTHONUNBUFFERED=1
 

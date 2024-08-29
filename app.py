@@ -1,6 +1,7 @@
 # app.py
 import requests
 import subprocess
+import os
 from flask import Flask, render_template_string
 
 # Define the version of the application
@@ -31,11 +32,39 @@ def get_internal_ip():
     except Exception as e:
         return f"Error fetching internal IP: {e}"
 
+def get_container_image_id():
+    """Fetches the container image ID by inspecting the Docker container."""
+    try:
+        # Get the container ID from environment variable
+        container_id = os.getenv('HOSTNAME', 'Unknown')
+        # Run `docker inspect` command to get the image ID
+        result = subprocess.run(
+            ["docker", "inspect", "--format='{{.Image}}'", container_id],
+            capture_output=True, text=True, check=True
+        )
+        image_id = result.stdout.strip().strip("'")
+        return image_id
+    except Exception as e:
+        return f"Error fetching container image ID: {e}"
+
+def get_os_version():
+    """Fetches the OS version from /etc/os-release."""
+    try:
+        result = subprocess.run(
+            ["grep", "VERSION_ID", "/etc/os-release"], capture_output=True, text=True, check=True
+        )
+        os_version = result.stdout.split('=')[1].strip().strip('"')
+        return os_version
+    except Exception as e:
+        return f"Error fetching OS version: {e}"
+
 @app.route('/')
 def index():
     public_ip = get_public_ip()
     internal_ip = get_internal_ip()
-    # HTML template for rendering the output
+    image_id = get_container_image_id()
+    os_version = get_os_version()
+    
     html_template = """
     <!DOCTYPE html>
     <html lang="en">
@@ -55,10 +84,12 @@ def index():
         <p><strong>Application Version:</strong> {{ version }}</p>
         <p><strong>Public IPv4 Address:</strong> {{ public_ip }}</p>
         <p><strong>Container Internal IPv4 Address:</strong> {{ internal_ip }}</p>
+        <p><strong>Container Image ID:</strong> {{ image_id }}</p>
+        <p><strong>OS Version:</strong> {{ os_version }}</p>
     </body>
     </html>
     """
-    return render_template_string(html_template, version=VERSION, public_ip=public_ip, internal_ip=internal_ip)
+    return render_template_string(html_template, version=VERSION, public_ip=public_ip, internal_ip=internal_ip, image_id=image_id, os_version=os_version)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
