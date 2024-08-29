@@ -1,0 +1,17 @@
+# Use a lightweight Ubuntu image
+FROM ubuntu:24.10
+
+# Install necessary packages: curl and nginx
+RUN apt-get update && apt-get install -y curl nginx && rm -rf /var/lib/apt/lists/*
+
+# Copy the bash script into the container
+COPY script.sh /usr/local/bin/script.sh
+
+# Make the script executable
+RUN chmod +x /usr/local/bin/script.sh
+
+# Expose port 80 for the web server
+EXPOSE 80
+
+# Run the bash script on container start
+CMD ["/usr/local/bin/script.sh"]
