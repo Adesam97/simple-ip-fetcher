@@ -6,13 +6,17 @@ CONTAINER_IP=$(hostname -i | awk '{print $1}')
 # Get container version (assuming it's stored in /etc/os-release)
 CONTAINER_VERSION=$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2)
 
-# Fetch the public IP address of the host machine using an external service
-HOST_PUBLIC_IP=$(curl -s https://api.ipify.org)
+# Get host machine IPv4 address
+HOST_PUBLIC_IP=$(ip route get 1 | awk '{print $(NF-2);exit}')
+
+# Get container base image
+BASE_IMAGE=$(cat /etc/os-release | grep "PRETTY_NAME" | sed 's/PRETTY_NAME=//g' | tr -d '"')
 
 # Export as environment variables
 export CONTAINER_IP
 export CONTAINER_VERSION
 export HOST_PUBLIC_IP
+export BASE_IMAGE
 
 # Create HTML file
 cat << EOF > /var/www/html/index.html
@@ -52,6 +56,7 @@ cat << EOF > /var/www/html/index.html
         <p><strong>Container IP:</strong> $CONTAINER_IP</p>
         <p><strong>Version:</strong> $CONTAINER_VERSION</p>
         <p><strong>Host IP:</strong> $HOST_PUBLIC_IP</p>
+        <p><strong>Base Image:</strong> $BASE_IMAGE</p>
     </div>
 </body>
 </html>
