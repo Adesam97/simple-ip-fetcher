@@ -2,7 +2,7 @@
 FROM ubuntu:24.10
 
 # Install necessary packages: curl and nginx
-RUN apt-get install -y curl nginx && rm -rf /var/lib/apt/lists/*
+RUN apt install -y curl nginx && rm -rf /var/lib/apt/lists/*
 
 # Copy the bash script into the container
 COPY script.sh /usr/local/bin/script.sh
