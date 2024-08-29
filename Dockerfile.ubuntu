@@ -10,7 +10,7 @@ COPY script.sh /usr/local/bin/script.sh
 # Make the script executable
 RUN chmod +x /usr/local/bin/script.sh
 
-RUN mkdir -p /var/ww/html
+RUN mkdir -p /var/www/html
 
 # Expose port 80 for the web server
 EXPOSE 80
