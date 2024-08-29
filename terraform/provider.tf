@@ -10,16 +10,9 @@ provider "azurerm" {
 # Configure remote state
 terraform {
   backend "azurerm" {
-    resource_group_name  = "tfstate"
-    storage_account_name = "tfstate${random_string.resource_code.result}"
-    container_name       = "tfstate"
+    resource_group_name  = "myTerraformStateRG124334545346"
+    storage_account_name = "mytfstatestorage123245646"
+    container_name       = "terraform-state323456533"
     key                  = "terraform.tfstate"
   }
-}
-
-# Generate random string for unique storage account name
-resource "random_string" "resource_code" {
-  length  = 5
-  special = false
-  upper   = false
 }

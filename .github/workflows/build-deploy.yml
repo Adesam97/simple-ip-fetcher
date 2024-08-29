@@ -56,9 +56,9 @@ jobs:
     - name: Create Azure Storage Account and Container
       run: |
           # Variables
-          RESOURCE_GROUP="myTerraformStateRG-${{ steps.azure-creds.outputs.subscription_id }}"
-          STORAGE_ACCOUNT="mytfstatestorage-${{ steps.azure-creds.outputs.subscription_id }}"
-          CONTAINER_NAME="terraform-state-${{ steps.azure-creds.outputs.subscription_id }}"
+          RESOURCE_GROUP="myTerraformStateRG124334545346"
+          STORAGE_ACCOUNT="mytfstatestorage123245646"
+          CONTAINER_NAME="terraform-state323456533"
 
           # Create Resource Group if it does not exist
           if ! az group show --name $RESOURCE_GROUP --query "name" --output tsv; then
