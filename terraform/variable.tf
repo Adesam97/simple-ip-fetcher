@@ -3,7 +3,7 @@ variable "image" {
   type        = string
 }
 
-variable "location" {
+variable "region" {
   description = "region of deployment"
   type        = string
 }
