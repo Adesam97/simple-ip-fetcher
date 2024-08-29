@@ -47,14 +47,14 @@ def get_container_image_id():
     except Exception as e:
         return f"Error fetching container image ID: {e}"
 
-def get_os_version():
+def get_image_os_version():
     """Fetches the OS version from /etc/os-release."""
     try:
         result = subprocess.run(
             ["grep", "VERSION_ID", "/etc/os-release"], capture_output=True, text=True, check=True
         )
-        os_version = result.stdout.split('=')[1].strip().strip('"')
-        return os_version
+        image_os_version = result.stdout.split('=')[1].strip().strip('"')
+        return image_os_version
     except Exception as e:
         return f"Error fetching OS version: {e}"
 
@@ -62,8 +62,7 @@ def get_os_version():
 def index():
     public_ip = get_public_ip()
     internal_ip = get_internal_ip()
-    image_id = get_container_image_id()
-    os_version = get_os_version()
+    image_os_version = get_image_os_version()
     
     html_template = """
     <!DOCTYPE html>
@@ -84,12 +83,11 @@ def index():
         <p><strong>Application Version:</strong> {{ version }}</p>
         <p><strong>Public IPv4 Address:</strong> {{ public_ip }}</p>
         <p><strong>Container Internal IPv4 Address:</strong> {{ internal_ip }}</p>
-        <p><strong>Container Image ID:</strong> {{ image_id }}</p>
-        <p><strong>OS Version:</strong> {{ os_version }}</p>
+        <p><strong>OS Version:</strong> {{ image_os_version }}</p>
     </body>
     </html>
     """
-    return render_template_string(html_template, version=VERSION, public_ip=public_ip, internal_ip=internal_ip, image_id=image_id, os_version=os_version)
+    return render_template_string(html_template, version=VERSION, public_ip=public_ip, internal_ip=internal_ip, image_os_version=image_os_version)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
