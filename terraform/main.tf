@@ -54,7 +54,7 @@ resource "kubernetes_deployment" "ip-finder" {
           name  = "ip-finder"
 
           port {
-            container_port = 80
+            container_port = 5000
           }
         }
       }
@@ -75,7 +75,7 @@ resource "kubernetes_service" "ip-finder" {
 
     port {
       port        = 80
-      target_port = 80
+      target_port = 5000
     }
 
     type = "LoadBalancer"
