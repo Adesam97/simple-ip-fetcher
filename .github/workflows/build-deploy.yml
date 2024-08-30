@@ -114,4 +114,4 @@ jobs:
     - name: Update Kubernetes Deployment
       run: |
         az aks get-credentials --resource-group myAKSResourceGroup --name myAKSCluster
-        kubectl set image deployment/ip-finder-deployment ip-finder=${{ env.DOCKERHUB_USERNAME }}/container-ip-finder:latest
+        kubectl set image deployment/my-ip-finder-deployment ip-finder=${{ env.DOCKERHUB_USERNAME }}/container-ip-finder:latest

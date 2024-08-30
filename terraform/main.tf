@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "ip-finder" {
 # Create a Kubernetes service
 resource "kubernetes_service" "ip-finder" {
   metadata {
-    name = "ip-finder-service"
+    name = "my-ip-finder-deployment"
   }
 
   spec {
